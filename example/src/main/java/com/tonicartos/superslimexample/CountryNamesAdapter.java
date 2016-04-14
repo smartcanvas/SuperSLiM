@@ -1,14 +1,14 @@
 package com.tonicartos.superslimexample;
 
-import com.tonicartos.superslim.GridSLM;
-import com.tonicartos.superslim.LinearSLM;
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.tonicartos.superslim.GridSLM;
+import com.tonicartos.superslim.LinearSLM;
 
 import java.util.ArrayList;
 
@@ -34,7 +34,8 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
     public CountryNamesAdapter(Context context, int headerMode) {
         mContext = context;
 
-        final String[] countryNames = context.getResources().getStringArray(R.array.country_names);
+        String[] countryNames = mContext.getResources().getStringArray(R.array.country_names);
+
         mHeaderDisplay = headerMode;
 
         mItems = new ArrayList<>();
@@ -44,16 +45,20 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
         int sectionManager = -1;
         int headerCount = 0;
         int sectionFirstPosition = 0;
+
         for (int i = 0; i < countryNames.length; i++) {
             String header = countryNames[i].substring(0, 1);
+
             if (!TextUtils.equals(lastHeader, header)) {
                 // Insert new header view and update section data.
                 sectionManager = (sectionManager + 1) % 2;
                 sectionFirstPosition = i + headerCount;
                 lastHeader = header;
                 headerCount += 1;
+
                 mItems.add(new LineItem(header, true, sectionManager, sectionFirstPosition));
             }
+
             mItems.add(new LineItem(countryNames[i], false, sectionManager, sectionFirstPosition));
         }
     }
@@ -76,6 +81,7 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.text_line_item, parent, false);
         }
+
         return new CountryViewHolder(view);
     }
 
@@ -90,6 +96,7 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
         // Overrides xml attrs, could use different layouts too.
         if (item.isHeader) {
             lp.headerDisplay = mHeaderDisplay;
+
             if (lp.isHeaderInline() || (mMarginsFixed && !lp.isHeaderOverlay())) {
                 lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
             } else {
@@ -99,9 +106,11 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
             lp.headerEndMarginIsAuto = !mMarginsFixed;
             lp.headerStartMarginIsAuto = !mMarginsFixed;
         }
+
         lp.setSlm(item.sectionManager == LINEAR ? LinearSLM.ID : GridSLM.ID);
         lp.setColumnWidth(mContext.getResources().getDimensionPixelSize(R.dimen.grid_column_width));
         lp.setFirstPosition(item.sectionFirstPosition);
+
         itemView.setLayoutParams(lp);
     }
 
@@ -117,11 +126,13 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
 
     public void setHeaderDisplay(int headerDisplay) {
         mHeaderDisplay = headerDisplay;
+
         notifyHeaderChanges();
     }
 
     public void setMarginsFixed(boolean marginsFixed) {
         mMarginsFixed = marginsFixed;
+
         notifyHeaderChanges();
     }
 

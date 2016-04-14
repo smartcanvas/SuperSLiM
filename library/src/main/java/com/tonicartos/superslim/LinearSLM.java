@@ -1,13 +1,17 @@
 package com.tonicartos.superslim;
 
+import android.content.Context;
 import android.view.View;
 
 public class LinearSLM extends SectionLayoutManager {
 
     public static int ID = LayoutManager.SECTION_MANAGER_LINEAR;
 
-    public LinearSLM(LayoutManager layoutManager) {
+    private final Context mContext;
+
+    public LinearSLM(LayoutManager layoutManager, Context context) {
         super(layoutManager);
+        mContext = context;
     }
 
     @Override

@@ -14,5 +14,6 @@
     app:slm_headerDisplay="inline|sticky"
     app:slm_isHeader="true"
     app:slm_section_headerMarginStart="56dip"
+    app:slm_section_headerMarginEnd="56dip"
     tools:text="Header Item"
-    /><!--app:slm_headerEndMargin="56dip"-->
+    />

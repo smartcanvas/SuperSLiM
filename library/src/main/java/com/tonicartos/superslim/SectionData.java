@@ -54,6 +54,7 @@ public class SectionData {
             } else {
                 marginStart = headerParams.headerMarginStart;
             }
+
             if (headerParams.headerEndMarginIsAuto) {
                 if (headerParams.isHeaderEndAligned() && !headerParams.isHeaderOverlay()) {
                     marginEnd = headerWidth;

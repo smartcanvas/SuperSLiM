@@ -9,8 +9,6 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -18,9 +16,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
-import android.view.FrameStats;
 import android.view.View;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
 
 import java.lang.annotation.Retention;
@@ -60,13 +56,13 @@ public class LayoutManager extends RecyclerView.LayoutManager {
     private boolean mSmoothScrollEnabled = true;
 
     public LayoutManager(Context context) {
-        mLinearSlm = new LinearSLM(this);
+        mLinearSlm = new LinearSLM(this, context);
         mGridSlm = new GridSLM(this, context);
         mSlms = new HashMap<>();
     }
 
     LayoutManager(Builder builder) {
-        mLinearSlm = new LinearSLM(this);
+        mLinearSlm = new LinearSLM(this, builder.context);
         mGridSlm = new GridSLM(this, builder.context);
         mSlms = builder.slms;
     }
@@ -324,7 +320,7 @@ public class LayoutManager extends RecyclerView.LayoutManager {
         }
         a.recycle();
 
-        return getSLM(sectionManagerKind, sectionManager).generateLayoutParams(c, attrs);
+        return getSlm(sectionManagerKind, sectionManager).generateLayoutParams(c, attrs);
     }
 
     @Override
@@ -670,7 +666,7 @@ public class LayoutManager extends RecyclerView.LayoutManager {
             return -1;
         }
 
-        int mid = min + (max - min) / 2;
+        int mid = (min + max) / 2;
 
         View candidate = getChildAt(mid);
         LayoutParams params = (LayoutParams) candidate.getLayoutParams();
@@ -1249,7 +1245,7 @@ public class LayoutManager extends RecyclerView.LayoutManager {
         return view;
     }
 
-    private SectionLayoutManager getSLM(int kind, String key) {
+    private SectionLayoutManager getSlm(int kind, String key) {
         if (kind == SECTION_MANAGER_CUSTOM) {
             return mSlms.get(key);
         } else if (kind == SECTION_MANAGER_LINEAR) {
@@ -1953,6 +1949,7 @@ public class LayoutManager extends RecyclerView.LayoutManager {
         private void init(ViewGroup.LayoutParams other) {
             if (other instanceof LayoutParams) {
                 final LayoutParams lp = (LayoutParams) other;
+
                 isHeader = lp.isHeader;
                 headerDisplay = lp.headerDisplay;
                 mFirstPosition = lp.mFirstPosition;
@@ -2016,6 +2013,7 @@ public class LayoutManager extends RecyclerView.LayoutManager {
                 HEADER_STICKY,
                 HEADER_OVERLAY
         })
+
         @Retention(RetentionPolicy.SOURCE)
         public @interface HeaderDisplayOptions {
 
@@ -2034,8 +2032,6 @@ public class LayoutManager extends RecyclerView.LayoutManager {
                 super("Invalid section first position given.");
             }
         }
-
-
     }
 
     protected static class SavedState implements Parcelable {

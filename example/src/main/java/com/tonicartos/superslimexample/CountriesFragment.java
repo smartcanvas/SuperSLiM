@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.tonicartos.superslim.GridSLM;
 import com.tonicartos.superslim.LayoutManager;
-import com.tonicartos.superslim.LinearSLM;
 import com.tonicartos.superslim.SectionLayoutManager;
 
 import java.util.Random;
@@ -151,21 +150,28 @@ public class CountriesFragment extends Fragment {
 
         private final RecyclerView mRecyclerView;
 
+        private RecyclerView.Adapter<?> mAdapter;
+
+        private LayoutManager mLayoutManager;
 
         public ViewHolder(View view) {
             mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         }
 
         public void initViews(LayoutManager lm) {
-            mRecyclerView.setLayoutManager(lm);
+            mLayoutManager = lm;
+
+            mRecyclerView.setLayoutManager(mLayoutManager);
+        }
+
+        public void setAdapter(RecyclerView.Adapter<?> adapter) {
+            mAdapter = adapter;
+
+            mRecyclerView.setAdapter(mAdapter);
         }
 
         public void scrollToPosition(int position) {
             mRecyclerView.scrollToPosition(position);
-        }
-
-        public void setAdapter(RecyclerView.Adapter<?> adapter) {
-            mRecyclerView.setAdapter(adapter);
         }
 
         public void smoothScrollToPosition(int position) {
