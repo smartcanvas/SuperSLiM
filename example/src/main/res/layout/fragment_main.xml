@@ -1,10 +1,35 @@
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/recycler_view"
-    android:scrollbars="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:recyclerviewfastscroller="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:clipToPadding="false"
-    android:layout_height="wrap_content" />
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" />
+
+    <com.tonicartos.superslimexample.SLiMFastScroller
+        android:id="@+id/fast_scroller"
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingRight="@dimen/margin_small"
+        android:paddingEnd="@dimen/margin_small"
+        recyclerviewfastscroller:rfs_barColor="@color/fastScrollBarColor"
+        recyclerviewfastscroller:rfs_handleBackground="@drawable/fast_scroller_indicator" />
+
+    <com.tonicartos.superslimexample.CountryScrollIndicator
+        android:id="@+id/fast_scroller_section_title_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/list_item_height"
+        android:layout_toLeftOf="@id/fast_scroller"
+        android:layout_toStartOf="@id/fast_scroller"
+        recyclerviewfastscroller:rfs_backgroundColor="@color/primary"
+        recyclerviewfastscroller:rfs_textColor="@color/accent" />
+
+</RelativeLayout>
 

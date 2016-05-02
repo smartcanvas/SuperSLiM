@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SectionIndexer;
 
 import com.tonicartos.superslim.GridSLM;
 import com.tonicartos.superslim.LinearSLM;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder> {
+public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder> implements SectionIndexer {
 
     private static final int VIEW_TYPE_HEADER = 0x01;
 
@@ -24,6 +25,7 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
     private static final int LINEAR = 0;
 
     private final ArrayList<LineItem> mItems;
+    private final ArrayList<LineItem> mHeaders;
 
     private int mHeaderDisplay;
 
@@ -39,6 +41,7 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
         mHeaderDisplay = headerMode;
 
         mItems = new ArrayList<>();
+        mHeaders = new ArrayList<>();
 
         //Insert headers into list of items.
         String lastHeader = "";
@@ -56,7 +59,11 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
                 lastHeader = header;
                 headerCount += 1;
 
-                mItems.add(new LineItem(header, true, sectionManager, sectionFirstPosition));
+                LineItem headerSection = new LineItem(header, true, sectionManager, sectionFirstPosition);
+
+                mItems.add(headerSection);
+
+                mHeaders.add(headerSection);
             }
 
             mItems.add(new LineItem(countryNames[i], false, sectionManager, sectionFirstPosition));
@@ -145,7 +152,30 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
         }
     }
 
-    private static class LineItem {
+    @Override
+    public Object[] getSections() {
+        return mHeaders.toArray();
+    }
+
+    @Override
+    public int getPositionForSection(int sectionIndex) {
+        return mItems.indexOf(mHeaders.get(formatSectionIndex(sectionIndex)));
+    }
+
+    @Override
+    public int getSectionForPosition(int position) {
+        return mHeaders.indexOf(mItems.get(mItems.get(formatItemIndex(position)).sectionFirstPosition));
+    }
+
+    private int formatSectionIndex(int position) {
+        return Math.max(0, Math.min(mHeaders.size(), position));
+    }
+
+    private int formatItemIndex(int position) {
+        return Math.max(0, Math.min(mItems.size() - 1, position));
+    }
+
+    public static class LineItem {
 
         public int sectionManager;
 
@@ -155,8 +185,7 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
 
         public String text;
 
-        public LineItem(String text, boolean isHeader, int sectionManager,
-                int sectionFirstPosition) {
+        public LineItem(String text, boolean isHeader, int sectionManager, int sectionFirstPosition) {
             this.isHeader = isHeader;
             this.text = text;
             this.sectionManager = sectionManager;

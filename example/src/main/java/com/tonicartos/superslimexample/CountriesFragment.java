@@ -63,7 +63,7 @@ public class CountriesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
@@ -150,12 +150,18 @@ public class CountriesFragment extends Fragment {
 
         private final RecyclerView mRecyclerView;
 
+        private final SLiMFastScroller mFastScroller;
+        private final CountryScrollIndicator mCountryScrollIndicator;
+
         private RecyclerView.Adapter<?> mAdapter;
 
         private LayoutManager mLayoutManager;
 
         public ViewHolder(View view) {
             mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+
+            mFastScroller = (SLiMFastScroller) view.findViewById(R.id.fast_scroller);
+            mCountryScrollIndicator = (CountryScrollIndicator) view.findViewById(R.id.fast_scroller_section_title_indicator);
         }
 
         public void initViews(LayoutManager lm) {
@@ -168,6 +174,11 @@ public class CountriesFragment extends Fragment {
             mAdapter = adapter;
 
             mRecyclerView.setAdapter(mAdapter);
+
+            mFastScroller.setRecyclerView(mRecyclerView);
+            mFastScroller.setSectionIndicator(mCountryScrollIndicator);
+
+            mRecyclerView.setOnScrollListener(mFastScroller.getOnScrollListener());
         }
 
         public void scrollToPosition(int position) {

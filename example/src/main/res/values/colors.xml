@@ -3,4 +3,5 @@
     <color name="primary">#009688</color>
     <color name="primary_dark">#00796b</color>
     <color name="accent">#d500f9</color>
+    <color name="fastScrollBarColor">#ffcecece</color>
 </resources>
