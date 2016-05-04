@@ -78,6 +78,7 @@ public class SLiMFastScroller extends AbsRecyclerViewFastScroller implements Rec
             if (visibleChild == null) {
                 return 0;
             }
+
             RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(visibleChild);
             int itemHeight = holder.itemView.getHeight();
             int recyclerHeight = recyclerView.getHeight();
@@ -87,7 +88,7 @@ public class SLiMFastScroller extends AbsRecyclerViewFastScroller implements Rec
             int numScrollableSectionsInList = numItemsInList - itemsInWindow;
             int indexOfLastFullyVisibleItemInFirstSection = numItemsInList - numScrollableSectionsInList - 1;
 
-            int currentSection = lastFullyVisiblePosition - indexOfLastFullyVisibleItemInFirstSection;
+            int currentSection = Math.max(0, lastFullyVisiblePosition - indexOfLastFullyVisibleItemInFirstSection);
 
             return (float) currentSection / numScrollableSectionsInList;
         }
