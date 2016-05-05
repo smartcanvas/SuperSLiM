@@ -77,7 +77,7 @@ publish {
     uploadName = 'com.tonicartos:superslim' // I don't know why, but I had to do this.
     publishVersion = VERSION_NAME
     description = 'A layout manager for the RecyclerView with interchangeable linear, grid, and staggered displays of views, all with configurable section headers including the sticky variety as specified in the material design docs.'
-    website = 'https://github.com/TonicArtos/SuperSLiM'
+    website = 'https://github.com/smartcanvas/SuperSLiM'
     autoPublish = false
     dryRun = false
 }
